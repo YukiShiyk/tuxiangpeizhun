@@ -1,3 +1,4 @@
+
 # 数字图像处理第二次实验报告
 ## 图像配准
 ## 自动化66史玉康
@@ -20,7 +21,7 @@
 
 
 配对结果
-![图像配准](tuxiangpeizhun/图像配准.PNG )
+![图像配准](https://raw.githubusercontent.com/YukiShiyk/tuxiangpeizhun/master/图像配准.PNG)
 
 ### （三）实验代码
 ```matlab
