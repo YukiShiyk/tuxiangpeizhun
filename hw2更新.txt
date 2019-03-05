@@ -1,0 +1,37 @@
+clear all;
+clc;
+I1=imread('ImageA.jpg');
+I2=imread('ImageB.jpg');
+unregistered =I2;%%未配准图像
+rect=I1;%%参考图像
+cpselect(unregistered,rect);%%%选择点对，选完后记得保存
+uiwait(msgbox('Click OK after closing the CPSELECT window.','Waiting...'));%创建一个按钮，等待用户反映
+fixedPoints=round(fixedPoints);
+movingPoints=round(movingPoints);
+figure; imshow(rect)
+hold on
+plot(fixedPoints(:,1),fixedPoints(:,2),'xw') 
+title('rect')
+figure; imshow(unregistered)
+hold on
+plot(fixedPoints(:,1),fixedPoints(:,2),'xw') 
+title('unregistered')
+movingPointsAdjusted = cpcorr(movingPoints,fixedPoints,...
+                              unregistered(:,:,1),rect(:,:,1));%调整控制点位置
+%tform = cp2tform(movingPointsAdjusted,movingPoints,'linear conformal');%%控制点的空间变换
+tform=fitgeotrans(fixedPoints,movingPoints,'similarity'); 
+%registered = imtransform(unregistered,tform,'XData',[1 300], 'YData',[1 300]);%%对图像进行重采样
+Iout=imwarp(I2,tform);   
+subplot(2,2,1)
+imagesc(rect)
+title('Original image 1')
+subplot(2,2,3)
+imagesc(unregistered)
+title('Unmatched image 2')
+subplot(2,2,2)
+imagesc(rect)
+title('Original image 1')
+subplot(2,2,4)
+imagesc(Iout)
+title('Matched image 2')
+colormap (gray)
